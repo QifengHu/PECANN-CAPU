@@ -1,5 +1,8 @@
 __pycache__/
 .ipynb_checkpoints/
+*.egg-info/
 *.pyc
+*/__pycache__/
+*/main.ipynb
 */logs/
 5_reverse_advection_T8_mesh257/
