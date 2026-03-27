@@ -6,33 +6,31 @@ import torch
 class PrimalOptimizer:
     """
     Wraps a single primal optimisation step.
-
     loss_fn(model) -> (loss, diagnostics_dict)
         * loss        – scalar tensor with grad graph for .backward()
         * diagnostics – dict of *detached* quantities the caller wants back
                         (e.g. objective, constr, loss value)
-
     Returns the diagnostics dict produced by the *accepted* step.
     """
-    
     @staticmethod
     def _scheduler_step(scheduler, loss_val: float):
         if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
             scheduler.step(loss_val)
         else:
             scheduler.step()
-            
+
     @staticmethod
     def step(model: torch.nn.Module,
              optim: torch.optim.Optimizer,
              loss_fn: Callable,
              using_lbfgs: bool,
              scheduler: Optional[object] = None) -> dict:
+
         if using_lbfgs:
             def closure():
                 optim.zero_grad(set_to_none=True)
                 loss, _ = loss_fn(model)
-                loss.backward()    
+                loss.backward()
                 return loss
             optim.step(closure)
         else:
@@ -47,12 +45,12 @@ class PrimalOptimizer:
             PrimalOptimizer._scheduler_step(scheduler, diag['loss'].item())
 
         return diag
-        
-        
+
+
 # ------------------------------------------------------------------ #
 #  PECANN-CAPU  (ALM state + dual updates)                           #
 # ------------------------------------------------------------------ #
- 
+
 @dataclass
 class PECANNState:
     Lambda: torch.Tensor
@@ -73,14 +71,14 @@ class PECANNTrainer:
         self.omega = omega
         self.zeta = zeta
         self.eps = eps
-        
+
     # ---- ALM loss ------------------------------------------------ #
     @staticmethod
     def augmented_lagrangian(objective: torch.Tensor, constr: torch.Tensor, state: PECANNState):
         return objective + (state.Lambda * constr).sum() + 0.5 * (state.Mu * constr.square()).sum()
 
     # ---- Primal step --------------------------------------------- #
-    def step(self, model, optim, state: PECANNState, using_lbfgs: bool, scheduler = None):
+    def step(self, model, optim, state: PECANNState, using_lbfgs: bool, scheduler=None):
         def loss_fn(mdl, training=True):
             objective, constr = self.eval_fn(mdl, training=training)
             loss = self.augmented_lagrangian(objective, constr, state)
@@ -90,20 +88,18 @@ class PECANNTrainer:
                 'loss':      loss.detach(),
             }
             return loss, diag
+
         diag = PrimalOptimizer.step(
             model, optim, loss_fn, using_lbfgs, scheduler
         )
         return diag['objective'], diag['constr'], diag['loss']
-    
+
     # ---- Dual update --------------------------------------------- #
     @torch.no_grad()
     def update_alm(self, state: PECANNState, constr: torch.Tensor, loss: torch.Tensor):
         state.Bar_v.mul_(self.zeta).add_((1 - self.zeta) * constr.square())
-
         if loss >= self.omega * state.previous_loss:
             state.Lambda.add_(state.Mu * constr)
             state.Mu.copy_(torch.max(self.eta / torch.sqrt(state.Bar_v + self.eps), state.Mu))
-
         state.previous_loss = loss
         return state
-

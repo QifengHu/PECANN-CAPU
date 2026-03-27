@@ -36,7 +36,7 @@ class Config:
     sigma: float = 1.0
 
     # Training / logging
-    trials: int = 1  
+    trials: int = 5 
     epochs: int = 40_000 
     disp: int = 10
     disp2: int = 1000     

@@ -9,7 +9,7 @@ import numpy as np
 from tqdm import tqdm
 
 from config import Config
-from pecann import PECANNState, PECANNTrainer
+from pecann_capu import PECANNState, PECANNTrainer
 
 from physics import PDE_opt, boundary_opt
 from data import sampling_spatio
