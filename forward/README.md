@@ -11,7 +11,7 @@ cd forward/case_folder_name/
 ./bash.sh
 ```
 
-**Demonstration notebook:** The `forward/1d_poisson_b50_dom512/` case includes a `demo_local_1trial.ipynb` Jupyter notebook that walks through the PECANN-CAPU workflow. This is the recommended starting point for new users who want to understand the algorithm before running full-scale cases.
+**Demonstration notebook:** The `./1d_poisson_b50_dom512/` case includes a `demo_local_1trial.ipynb` Jupyter notebook that walks through the PECANN-CAPU workflow. This is the recommended starting point for new users who want to understand the algorithm before running full-scale cases.
 
 ## General Directory Structure
 
