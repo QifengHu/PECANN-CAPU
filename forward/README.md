@@ -11,7 +11,7 @@ cd forward/case_folder_name/
 ./bash.sh
 ```
 
-**Demonstration notebook:** The `./1d_poisson_b50_dom512/` case includes a `demo_local_1trial.ipynb` Jupyter notebook that walks through the PECANN-CAPU workflow. This is the recommended starting point for new users who want to understand the algorithm before running full-scale cases.
+**Demonstration notebook:** The `./1d_poisson_b50_dom128_fourier/` case includes a `demo_local_1trial.ipynb` Jupyter notebook that walks through the PECANN-CAPU workflow. This is the recommended starting point for new users who want to understand the algorithm before running full-scale cases.
 
 ## General Directory Structure
 
@@ -64,4 +64,4 @@ from pecann_capu import PECANNTrainer, PECANNState
 
 ## Demo Notebook
 
-The `forward/1d_poisson_b50_dom512/demo_local_1trial.ipynb` notebook provides an interactive walkthrough of the PECANN-CAPU algorithm applied to the 1D Poisson equation with a multi-scale solution.
+The `forward/1d_poisson_b50_dom128_fourier/demo_local_1trial.ipynb` notebook provides an interactive walkthrough showing how PECANN-CAPU leverages a shallow network with a single Fourier feature mapping, to accurately solve the 1D Poisson equation with a multi-scale solution.
