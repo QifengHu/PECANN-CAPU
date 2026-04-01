@@ -1,9 +1,8 @@
 *.egg-info/
 5_1_repeat_5/
 
-*/__pycache__/
-*/*/__pycache__/
-*/*/.ipynb_checkpoints/
+**/__pycache__/
+**/.ipynb_checkpoints/
 
 # Ignore logs and pics for all cases except the demo
 forward/*/logs/*
