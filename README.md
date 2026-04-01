@@ -38,7 +38,7 @@ pip install git+https://github.com/QifengHu/PECANN-CAPU.git
 
 ```bash
 git clone https://github.com/QifengHu/PECANN-CAPU.git
-cd PECANN-CAPU
+cd pecann-capu
 pip install -e .
 ```
 
